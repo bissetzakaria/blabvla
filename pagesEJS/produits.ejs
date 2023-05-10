@@ -1,0 +1,113 @@
+<script>
+  let genre = "<%= requete.params.genre %>";
+</script>
+
+<main class="container">
+  <h1 class="text-center my-5">Nos produits pour <%=  %></h1>
+  <form class="mb-3" method="GET">
+    <div class="row g-0">
+      <div class="col-md-6">
+        <label class="form-label">Type</label>
+        <select name="type" class="form-select text-center">
+          <option value="">-- Tous --</option>
+          <% let types = [...new Set(produits.map((p) => p.type))];
+          types.forEach((type) => { %>
+          <option value="<%= type %>"><%= type %></option>
+          <% }) %>
+        </select>
+      </div>
+      <div class="col-md-6">
+        <button type="submit" class="btn btn-primary mt-4 btn-filter">Filtrer</button>
+      </div>
+    </div>
+  </form>
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+    <% produits.filter((produit) =>
+      (!requete.query.type || produit.type === requete.query.type) &&
+      (!requete.query.taille || produit.taille.includes(requete.query.taille))
+    ).forEach((produit) => { %>
+    <div class="col">
+      <div class="card h-auto">
+        <div class="position-relative">
+          <img src="<%= produit.fichierImage %>" class="card-img-top" alt="<%= produit.description %>">
+          <i class="far fa-heart heart-icon heart-empty"></i>
+        </div>        
+        <div class="card-body p-0">
+          <h5 class="card-title mb-2"><%= produit.nom %></h5>
+          <p class="card-text"><strong>Type:</strong> <%= produit.type %></p>
+          <p class="card-text"><strong>Description:</strong> <%= produit.description %></p>
+          <p class="card-text"><strong>Taille et couleur:</strong>
+            <div class="d-flex">
+              <div class="flex-fill me-2">
+                <label for="taille-select">Taille:</label>
+                <select id="taille-select" name="taille" class="form-select-text-center form-select-sm text-center">
+                  <% produit.taille.forEach((taille) => { %>
+                  <option value="<%= taille %>" class="text-center" style="max-width: 100px;"><%= taille %></option>
+                  <% }) %>
+                </select>
+              </div>
+              <div class="flex-fill">
+                <label for="couleur-select">Couleur:</label>
+                <select id="couleur-select" name="couleur" class="form-select-text-center form-select-sm text-center">
+                  <% produit.couleur.forEach((couleur) => { %>
+                  <option value="<%= couleur %>" class="text-center" style="max-width: 100px;"><%= couleur %></option>
+                  <% }) %>
+                </select>
+              </div>
+            </div>
+          </p>
+          <p class="card-text mb-1"><strong>Prix:</strong> <%= produit.prix %> CAD</p>
+          <a href="#" class="btn btn-primary btn-buy">Acheter</a>
+          <div class="position-absolute bottom-0 end-0">
+            <a href="/produits/editer/<%= produit._id %>"><i class="fas fa-pencil-alt text-primary me-3"></i></a>
+            <i class="fas fa-trash-alt text-danger"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <% }) %>
+  </div>
+</main>
+
+<style>
+  .btn-filter,
+  .btn-buy {
+    background-color: #3c3c3c;
+    color: #fff;
+  }
+  .heart-icon {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  color: #3c3c3c;
+  transition: all 0.3s ease-in-out;
+}
+
+.heart-empty:before {
+  content: "\f08a";
+}
+
+.heart-full:before {
+  content: "\f004";
+  color: red;
+}
+
+.position-relative:hover .heart-icon {
+  transform: scale(1.2);
+}
+
+.position-relative:hover .heart-empty {
+  color: red;
+}
+
+.position-relative:hover .heart-full {
+  color: red;
+}
+img {
+  width: 100px;
+  height: 300px;
+}
+</style>
+<Script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-Tmrla1kxIe6SKON/U6nTKUzNL4Z6xs2Zo9P/HjSiaJy0I+bb6xI4D4z4YUKN+I4zEn6LQX9jKoAMzygOy99Jkw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</Script>
